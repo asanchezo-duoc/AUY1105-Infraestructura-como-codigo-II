@@ -110,7 +110,6 @@ jobs:
 
     - name: Validate Policy
       uses: open-policy-agent/conftest-action@v1
-      working-directory: ${{ env.WORKING_DIR }}
       with:
         policy: ${{ env.WORKING_DIR }}/location_policy.rego
         data: ${{ env.WORKING_DIR }}/tfplan.json
