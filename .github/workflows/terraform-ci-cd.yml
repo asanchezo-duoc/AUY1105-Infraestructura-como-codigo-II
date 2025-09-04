@@ -109,7 +109,7 @@ jobs:
         echo "\`\`\`" >> $GITHUB_STEP_SUMMARY
 
     - name: Download OPA
-      uses: open-policy-agent/setup-opa
+      uses: open-policy-agent/setup-opa@v2.2.0
       with:
         version: latest
 
