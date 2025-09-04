@@ -117,9 +117,12 @@ jobs:
       working-directory: ${{ env.WORKING_DIR }}
       run: |
         echo "Validando políticas OPA..."
-        opa eval --fail-defined -d location_policy.rego -i tfplan.json "data.terraform.azure.location.allow" | tee opa_result.txt
-        if [ $(grep -c "\"status\": false" opa_result.txt) -eq 0 ]; then
-          echo "❌ Política OPA falló. Status: false"
+        opa eval -d location_policy.rego -i tfplan.json "data.terraform.azure.location.allow" | tee opa_result.txt
+        FALSE_COUNT=$(jq '[.result[].expressions[].value.status | select(. == false)] | length' opa_result.txt)
+        echo "Resultados con status false: $FALSE_COUNT"
+        if [ "$FALSE_COUNT" -gt 0 ]; then
+          echo "❌ Política OPA falló. Se encontraron $FALSE_COUNT violaciones"
+          jq '.result[].expressions[].value | select(.status == false)' opa_result.txt
           exit 1
         else
           echo "✅ Política OPA pasó exitosamente" 
