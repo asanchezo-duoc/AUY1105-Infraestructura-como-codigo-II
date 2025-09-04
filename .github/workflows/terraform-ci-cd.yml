@@ -117,7 +117,7 @@ jobs:
       working-directory: ${{ env.WORKING_DIR }}
       run: |
         echo "Validando políticas OPA..."
-        opa eval --fail-defined -d location_policy.rego -i tfplan.json "data.terraform.azure.location.allow"
+        opa eval --fail-defined -d location_policy.rego -i tfplan.json "data.terraform.azure.location.violations"
         echo "✅ Política OPA pasó exitosamente" 
 
     - name: Upload Plan as Artifact
