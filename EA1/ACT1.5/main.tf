@@ -26,7 +26,7 @@ module "infraestructura_azure" {
   source = "git::https://gitlab.com/nicosingh/curso-infra-como-codigo-ago-sep-2025.git//clase-4/modulo-interno-azure?ref=6125164b0ccb27ea2f53c950bbbdda3b539115db"
 
   nombre_proyecto = "clase-4"
-  ubicacion       = "East US 2"
+  ubicacion       = "West US 2"
   ambiente        = terraform.workspace
 
   nombre_grupo_recursos = "AreaInfraestructura"
