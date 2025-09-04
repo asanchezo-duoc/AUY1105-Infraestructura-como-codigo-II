@@ -15,7 +15,7 @@ on:
 
 env:
   TF_VERSION: "1.13.0"
-  WORKING_DIR: "EA1/ACT1.4"
+  WORKING_DIR: "EA1/ACT1.5"
 
 jobs:
   validate:
@@ -100,11 +100,21 @@ jobs:
       run: |
         echo "Generating Terraform plan..."
         terraform plan -input=false -out=tfplan
+        terraform show -json tfplan > tfplan.json
         echo "## Terraform Plan" >> $GITHUB_STEP_SUMMARY
         echo "" >> $GITHUB_STEP_SUMMARY
         echo "\`\`\`" >> $GITHUB_STEP_SUMMARY
         terraform show tfplan -no-color >> $GITHUB_STEP_SUMMARY
         echo "\`\`\`" >> $GITHUB_STEP_SUMMARY
+
+    - name: Validate Policy
+      working-directory: ${{ env.WORKING_DIR }}
+      uses: open-policy-agent/conftest-action@v1
+      with:
+        files: ${{ env.WORKING_DIR }}/tfplan.json
+        policy: ${{ env.WORKING_DIR }}/location_policy.rego
+        input-type: terraform
+
 
     - name: Upload Plan as Artifact
       uses: actions/upload-artifact@v4
