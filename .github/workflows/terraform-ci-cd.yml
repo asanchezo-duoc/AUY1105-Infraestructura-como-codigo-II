@@ -109,13 +109,12 @@ jobs:
         echo "\`\`\`" >> $GITHUB_STEP_SUMMARY
 
     - name: Validate Policy
-      working-directory: ${{ env.WORKING_DIR }}
       uses: open-policy-agent/conftest-action@v1
+      working-directory: ${{ env.WORKING_DIR }}
       with:
-        files: ${{ env.WORKING_DIR }}/tfplan.json
         policy: ${{ env.WORKING_DIR }}/location_policy.rego
-        input-type: terraform
-
+        data: ${{ env.WORKING_DIR }}/tfplan.json
+        fail-on-warnings: true
 
     - name: Upload Plan as Artifact
       uses: actions/upload-artifact@v4
